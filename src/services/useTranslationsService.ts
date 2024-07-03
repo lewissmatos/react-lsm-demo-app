@@ -12,8 +12,8 @@ const useTranslationsService = () => {
 		try {
 			setIsLoading(true);
 
-			const apiUrl = "https://api.openai.com/v1/chat/completions"; // Update with the correct API endpoint
-			const apiKey = "sk-proj-Q4pTKgBAnhQPv7ne5EeMT3BlbkFJv9MtB0VAcRq44VOx0hkv"; // Replace with your actual API key
+			const apiUrl = "https://api.openai.com/v1/chat/completions";
+			const apiKey = process.env.OPEN_AI_API_KEY;
 			const headers = {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${apiKey}`,
