@@ -1,0 +1,11 @@
+{
+	"examples": "Examples",
+	"languages": "Languages",
+	"appLanguage": "App Language: {currentLanguage}",
+	"fillEmptyValuesWithAI": "Fill empty values with AI",
+	"generatingTranslations": "Generating translations...",
+	"GENERATIVE_TYPES": {
+		"ONLY_EMPTY_FIELDS": "Only empty fields",
+		"IMPROVE_AND_FILL_TRANSLATIONS": "Improve and fill translations"
+	}
+}
