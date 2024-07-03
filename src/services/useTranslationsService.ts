@@ -13,7 +13,7 @@ const useTranslationsService = () => {
 			setIsLoading(true);
 
 			const apiUrl = "https://api.openai.com/v1/chat/completions";
-			const apiKey = process.env.OPEN_AI_API_KEY;
+			const apiKey = import.meta.env.VITE_OPEN_AI_API_KEY;
 			const headers = {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${apiKey}`,
@@ -70,36 +70,44 @@ export type GenerativeType =
 const handlePromptSend = (generativeType: GenerativeType, language: string) => {
 	const onlyEmptyFields = `${promptHead}
 
-		This JSON object will have some keys with all values empty
-		You will generate a new JSON object with the same keys in the same format, but you will fill in the keys with the ${language} translation.
-		To do this, you will get the context of the key that will be in English, and you will fill it with the ${language} translation.
-	
-		Please use natural language that makes sense to a native speaker of the ${language} language.
-	
-		- Remember not to generate any new keys. You will only have keys with empty values. You will only fill them values and return the same structure with the same object keys
-		- Remember to use the ${language} language for the values.
-		- Remember not to use any other language.
-		- Remember to use the exact same keys in the same format.
-		- The values shouldn't have any typos. Remember to start with Capital letters.
-		- Don't use phrases or meaning if not necessary. Use the ${language} translation or interpret the key as a sentence.
-	`;
+		This JSON object will have some keys with empty values.
+		You will generate a new JSON object with the same keys and structure, filling the empty values with the ${language} translation of their respective keys.
+		To do this, translate the key from English to ${language} and use the translation as the value.
+		
+		Instructions:
+		- Do not generate any new keys.
+		- Do not change the structure of the object.
+		- Do not infer meaning or generate additional content from the key.
+		- Use the ${language} translation of the key as the value.
+		- Ensure the values have correct capitalization and no typos.
+		- Only use the ${language} for the values.
+		- Translate the key into a natural and appropriate ${language} value (e.g., "brandNew" should be translated as "Totalmente nuevo" in Spanish).
+
+		`;
 
 	const improveTranslations = `${promptHead}
-		
-		This JSON object will have some empty values, others will be filled with the ${language} translation.
-		You will generate a new JSON object with the same keys in the same format. 
-		You will fill in the empty values with the ${language} translation, taking into account they key so you can infer the value.
-		If the value of the key doesn't correspond to the key meaning, you will change the value to the ${language} translation.
 
-		You will also change the values of the keys that are not empty, if you consider that the value can be different and be more natural.
+		This JSON object will have some empty values and others filled with the ${language} translation.
+		You will generate a new JSON object with the same keys and structure.
+		Your tasks are as follows:
 		
-		- You will not generate any new keys.
-		- Remember to use the ${language} language for the values.
-		- Remember not to use any other language.
-		- Remember to use the exact same keys in the same format.
-		- The values shouldn't have any typos. Remember to start with Capital letters.
-		- Don't use phrases or meaning if not necessary. Use the ${language} translation or interpret the key as a sentence.
-	`;
+		1. Fill the empty values with the ${language} translation of their respective keys. Translate the key from English to ${language} and use this translation as the value.
+		2. Review the non-empty values:
+		   - If a value does not correspond accurately to the key, replace it with the correct ${language} translation.
+		   - If a value can be improved to sound more natural, update it accordingly.
+		
+		Instructions:
+		- Do not generate any new keys.
+		- Do not change the structure of the object.
+		- Use only the ${language} for the values.
+		- Ensure the values have correct capitalization and no typos.
+		- Use the exact same keys in the same format.
+		- Do not infer additional meaning or generate extra content from the key.
+		- Only use the ${language} translation as the value.
+		- Translate the key into a natural and appropriate ${language} value (e.g., "brandNew" should be translated as "Totalmente nuevo" in Spanish).
+		- Also, if the value is correct but misspelled, correct it. For example Capitalization matters, and stuff.
+		`;
+
 	const prompts = {
 		ONLY_EMPTY_FIELDS: onlyEmptyFields,
 		IMPROVE_AND_FILL_TRANSLATIONS: improveTranslations,

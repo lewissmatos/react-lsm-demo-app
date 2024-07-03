@@ -153,7 +153,7 @@ const TranslationColumn: FC<TranslationColumnProps> = ({
 					return (
 						<Tooltip content={value}>
 							<TranslationValueInput
-								key={key + index}
+								key={key + index + langKey + value}
 								langKey={langKey}
 								defaultValue={value}
 								propKey={key}
