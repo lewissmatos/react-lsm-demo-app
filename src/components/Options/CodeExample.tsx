@@ -33,8 +33,9 @@ type CodeRendererProps = {
 	codeString: string;
 	translationKey: string;
 	options: LsmTranslationOptions;
-	Output: any;
+	Output: React.ReactNode;
 };
+
 const CodeRenderer: FC<CodeRendererProps> = memo(
 	({ codeString, translationKey, options, Output }) => {
 		const { translate } = useLsmTranslation();
@@ -42,8 +43,8 @@ const CodeRenderer: FC<CodeRendererProps> = memo(
 		return (
 			<Code className="flex flex-col gap-1 opacity-90 rounded-lg">
 				<div className="flex justify-between pt-1">
+					{/* Output */}
 					{Output}
-
 					<div className="flex gap-2">
 						<CopyButton
 							tooltipContent={translate("optionsScreen.copyFullCode")}
@@ -78,24 +79,6 @@ const CodeRenderer: FC<CodeRendererProps> = memo(
 	}
 );
 
-const getCodeString = (
-	options: LsmTranslationOptions,
-	translationKey: string
-	// outputText: string
-) => {
-	const formattedOptions = JSON.stringify(options, null, 12);
-	const codeString = `
-import React from "react";
-import { useLsmTranslation } from "react-lsm";
-
-const Example = () => {
-		const { translate } = useLsmTranslation();
-		return <h1>{translate("${translationKey}", ${formattedOptions})}</h1>;
-};
-`;
-	return codeString;
-};
-
 const OutputManager = ({
 	translationKey,
 	options,
@@ -103,34 +86,30 @@ const OutputManager = ({
 	translationKey: string;
 	options: LsmTranslationOptions;
 }) => {
-	const { setLanguage, language, translate } = useLsmTranslation();
-
+	const { setLanguage, language, translate, availableLanguages } =
+		useLsmTranslation();
 	return (
 		<>
 			<ButtonGroup>
-				<Button
-					onClick={() => setLanguage("en-US")}
-					className={`text ${
-						language === "en-US" ? "font-bold underline" : "text-gray-400"
-					}`}
-				>
-					English
-				</Button>
-				<Button
-					onClick={() => setLanguage("es-MX")}
-					className={`text ${
-						language === "es-MX" ? "font-bold underline" : "text-gray-400"
-					}`}
-				>
-					Español
-				</Button>
+				{availableLanguages?.map((lang) => (
+					<Button
+						key={lang}
+						onClick={() => setLanguage(lang)}
+						className={`text ${
+							language === lang ? "font-bold underline" : "text-gray-400"
+						}`}
+					>
+						{lang}
+					</Button>
+				))}
 			</ButtonGroup>
 
 			<div className="flex flex-row gap-1 my-2 border-b border-gray-200 ">
-				<h4 className="text-lg text-gray-500">{">>"}:</h4>
+				<h4 className="text-lg text-gray-500">{"<< "}</h4>
 				<h1 className="text-xl font-semibold">
-					'{translate(translationKey, options)}'
+					{translate(translationKey, options)}
 				</h1>
+				<h4 className="text-lg text-gray-500">{" >>"}</h4>
 			</div>
 		</>
 	);
@@ -139,7 +118,7 @@ const OutputManager = ({
 type CodeExampleProps = {
 	options: LsmTranslationOptions;
 	translationKey: string;
-	TranslationsProvider: any;
+	TranslationsProvider: FC<{ children: React.ReactNode }>;
 };
 
 const CodeExample = ({
@@ -162,6 +141,24 @@ const CodeExample = ({
 			/>
 		</div>
 	);
+};
+
+const getCodeString = (
+	options: LsmTranslationOptions,
+	translationKey: string
+	// outputText: string
+) => {
+	const formattedOptions = JSON.stringify(options, null, 12);
+	const codeString = `
+import React from "react";
+import { useLsmTranslation } from "react-lsm";
+
+const Example = () => {
+		const { translate } = useLsmTranslation();
+		return <h1>{translate("${translationKey}", ${formattedOptions})}</h1>;
+};
+`;
+	return codeString;
 };
 
 export default CodeExample;

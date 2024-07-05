@@ -14,6 +14,7 @@ const TranslationKeyInput: FC<TranslationKeyInputProps> = ({
 	updateKey,
 	propKey,
 }) => {
+	const { translate } = useLsmTranslation();
 	const [inputValue, setInputValue] = useState("");
 	useEffect(() => {
 		setInputValue(defaultValue);
@@ -26,7 +27,7 @@ const TranslationKeyInput: FC<TranslationKeyInputProps> = ({
 				const formattedValue = e.target.value.replace(/ /g, "_");
 				setInputValue(formattedValue);
 			}}
-			placeholder="Key"
+			placeholder={translate("key")}
 			endContent={
 				<Button
 					variant="light"
@@ -62,7 +63,7 @@ const KeysColumn: FC<KeysColumnProps> = ({
 
 	return (
 		<div className="flex flex-col gap-4">
-			<h3 className="text-2xl text-center">Key</h3>
+			<h3 className="text-2xl text-center">{translate("key")}</h3>
 			{keys.map((key) => (
 				<div className="flex flex-row gap-2" key={key}>
 					<Button

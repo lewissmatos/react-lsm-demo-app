@@ -31,7 +31,7 @@ const OptionGenerator: FC<OptionGeneratorProps> = ({ translations }) => {
 
 	return (
 		<section className="grid col-span-3">
-			<h1 className="text-4xl font-bold">{translate("optionsScreen.title")}</h1>
+			<h1 className="text-3xl font-bold">{translate("optionsScreen.title")}</h1>
 			<div className="grid grid-cols-5 gap-4 mt-4">
 				<div className="col-span-5 lg:col-span-2">
 					{/* <Input
@@ -96,7 +96,11 @@ const OptionGenerator: FC<OptionGeneratorProps> = ({ translations }) => {
 					<CodeExample
 						options={options}
 						translationKey={translationKey}
-						TranslationsProvider={UserGeneratedConfiguredProvider}
+						TranslationsProvider={
+							UserGeneratedConfiguredProvider as FC<{
+								children: React.ReactNode;
+							}>
+						}
 					/>
 					{/* </UserGeneratedConfiguredProvider> */}
 				</div>

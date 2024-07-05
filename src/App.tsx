@@ -5,6 +5,7 @@ import en_US from "./locales/en-US.translation.json";
 import es_MX from "./locales/es-MX.translation.json";
 import OptionGenerator from "./components/Options/OptionsGenerator";
 import useLocalDatabase from "./hooks/useLocalDatabase";
+import AppHeader from "./components/UI/AppHeader";
 
 function App() {
 	const database = useLocalDatabase();
@@ -17,6 +18,7 @@ function App() {
 	return (
 		<GeneratorConfiguredProvider>
 			<main className="flex flex-col gap-6">
+				<AppHeader />
 				<TranslationsGenerator database={database} />
 				<OptionGenerator translations={database.translations} />
 				{/* <Documentation /> */}

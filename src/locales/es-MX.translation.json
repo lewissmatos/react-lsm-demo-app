@@ -10,7 +10,8 @@
 		"IMPROVE_AND_FILL_TRANSLATIONS": "Mejorar y rellenar traducciones con IA"
 	},
 	"enterANewKey": "Ingrese una nueva Key",
-	"addKey": "Agregar Key",
+	"addKey": "Agregar Clave",
+	"key": "Clave",
 	"enterNewLanguage": "Ingrese un nuevo idioma",
 	"addLanguage": "Agregar Idioma",
 	"documentation": "Documentación",
@@ -40,5 +41,6 @@
 	"none": "Ninguno",
 	"npmRepository": "Repositorio npm",
 	"githubRepository": "Repositorio de Github",
-	"microsoftLanguagesReference": "Referencia de idiomas de Microsoft"
+	"microsoftLanguagesReference": "Referencia de idiomas de Microsoft",
+	"donateOnKofi": "Donar en Ko fi"
 }

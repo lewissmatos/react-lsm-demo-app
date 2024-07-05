@@ -11,6 +11,7 @@
 	},
 	"enterANewKey": "Enter a new Key",
 	"addKey": "Add Key",
+	"key": "Key",
 	"enterNewLanguage": "Enter a new language",
 	"addLanguage": "Add Language",
 	"documentation": "Documentation",
@@ -40,5 +41,6 @@
 	"none": "None",
 	"npmRepository": "npm Repository",
 	"githubRepository": "Github Repository",
-	"microsoftLanguagesReference": "Microsoft Languages Reference"
+	"microsoftLanguagesReference": "Microsoft Languages Reference",
+	"donateOnKofi": "Donate on Ko fi"
 }

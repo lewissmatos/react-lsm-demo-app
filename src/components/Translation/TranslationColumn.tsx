@@ -8,7 +8,7 @@ import {
 	Spinner,
 	Tooltip,
 } from "@nextui-org/react";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import DownloadAsJSONButton from "./DownloadAsJSONButton";
 import { useLsmTranslation } from "react-lsm";
 import useTranslationsService, {
@@ -39,27 +39,29 @@ const TranslationValueInput: FC<TranslationValueInputProps> = ({
 		setInputValue(e.target.value);
 	};
 	return (
-		<Input
-			value={inputValue}
-			onChange={handleChange}
-			placeholder={`${langKey} Value`}
-			endContent={
-				<Button
-					variant="light"
-					color="primary"
-					isIconOnly
-					size="sm"
-					className={
-						inputValue.length > 0 && inputValue !== defaultValue
-							? ""
-							: "opacity-0"
-					}
-					onClick={() => addTranslation(langKey, propKey, inputValue)}
-				>
-					<span className="icon-[solar--document-add-broken] text-xl"></span>
-				</Button>
-			}
-		/>
+		<Tooltip content={inputValue}>
+			<Input
+				value={inputValue}
+				onChange={handleChange}
+				placeholder={`${langKey} Value`}
+				endContent={
+					<Button
+						variant="light"
+						color="primary"
+						isIconOnly
+						size="sm"
+						className={
+							inputValue.length > 0 && inputValue !== defaultValue
+								? ""
+								: "opacity-0"
+						}
+						onClick={() => addTranslation(langKey, propKey, inputValue)}
+					>
+						<span className="icon-[solar--document-add-broken] text-xl"></span>
+					</Button>
+				}
+			/>
+		</Tooltip>
 	);
 };
 
