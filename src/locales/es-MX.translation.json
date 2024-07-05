@@ -14,5 +14,31 @@
 	"enterNewLanguage": "Ingrese un nuevo idioma",
 	"addLanguage": "Agregar Idioma",
 	"documentation": "Documentación",
-	"options": "Opciones"
+	"optionsScreen": {
+		"translationKey": "Llave de traducción",
+		"title": "Opciones",
+		"textFormat": "Formato de texto",
+		"textMutation": "Mutación de texto",
+		"textCase": "Tipo de texto",
+		"adornments": "Adornos",
+		"mutate": "Mutar",
+		"content": "Contenido",
+		"replace": "Reemplazar",
+		"withTranslation": "Con traducción",
+		"prefixContent": "Prefijo de contenido",
+		"suffixContent": "Sufijo de contenido",
+		"copyFullCode": "Copiar código completo",
+		"copyOptions": "Copiar opciones",
+		"replaceableKey": "Clave de reemplazo",
+		"replaceableValue": "Valor de reemplazo",
+		"applyReplacements": "Aplicar reemplazos",
+		"when": "Cuando"
+	},
+	"output": "Salida",
+	"true": "Verdadero",
+	"false": "Falso",
+	"none": "Ninguno",
+	"npmRepository": "Repositorio npm",
+	"githubRepository": "Repositorio de Github",
+	"microsoftLanguagesReference": "Referencia de idiomas de Microsoft"
 }

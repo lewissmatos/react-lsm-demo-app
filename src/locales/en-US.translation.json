@@ -14,5 +14,31 @@
 	"enterNewLanguage": "Enter a new language",
 	"addLanguage": "Add Language",
 	"documentation": "Documentation",
-	"options": "Options"
+	"optionsScreen": {
+		"translationKey": "Translation Key",
+		"title": "Options",
+		"textFormat": "Text Format",
+		"textMutation": "Text Mutation",
+		"textCase": "Text Case",
+		"adornments": "Adornments",
+		"mutate": "Mutate",
+		"content": "Content",
+		"replace": "Replace",
+		"withTranslation": "With Translation",
+		"prefixContent": "Prefix Content",
+		"suffixContent": "Suffix Content",
+		"copyFullCode": "Copy Full Code",
+		"copyOptions": "Copy Options",
+		"replaceableKey": "Replaceable Key",
+		"replaceableValue": "Replaceable Value",
+		"applyReplacements": "Apply Replacements",
+		"when": "When"
+	},
+	"output": "Output",
+	"true": "True",
+	"false": "False",
+	"none": "None",
+	"npmRepository": "npm Repository",
+	"githubRepository": "Github Repository",
+	"microsoftLanguagesReference": "Microsoft Languages Reference"
 }

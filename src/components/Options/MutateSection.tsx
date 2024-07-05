@@ -11,7 +11,7 @@ const MutateSection: FC<MutateSectionProps> = ({ options, setOptions }) => {
 
 	const isMutateActive = !!options?.mutate;
 	return (
-		<div>
+		<div className="mt-4">
 			<div className="flex flex-row items-center gap-1 justify-between mt-1">
 				<Switch
 					onChange={(e) => {
@@ -35,8 +35,9 @@ const MutateSection: FC<MutateSectionProps> = ({ options, setOptions }) => {
 					}}
 					key={isMutateActive ? "mutate" : "no-mutate"}
 					defaultSelected={isMutateActive}
+					size="sm"
 				>
-					mutate
+					{translate("optionsScreen.mutate")}
 				</Switch>
 				<Checkbox
 					onChange={(e) => {
@@ -56,12 +57,13 @@ const MutateSection: FC<MutateSectionProps> = ({ options, setOptions }) => {
 							: "withoutTranslation"
 					}
 					defaultSelected={!!options.mutate?.withTranslation}
+					size="sm"
 				>
-					withTranslation
+					{translate("optionsScreen.withTranslation")}
 				</Checkbox>
 			</div>
 			{!!options.mutate && (
-				<div className="mt-2 flex flex-row gap-1">
+				<div className="mt-2 flex flex-row gap-2">
 					<Select
 						size="sm"
 						onChange={(e) =>
@@ -74,7 +76,7 @@ const MutateSection: FC<MutateSectionProps> = ({ options, setOptions }) => {
 								},
 							})
 						}
-						label={translate("when")}
+						label={translate("optionsScreen.when")}
 						defaultSelectedKeys={[options.mutate.when ? "true" : "false"]}
 						key={options.mutate.when ? "true" : "false"}
 					>
@@ -87,7 +89,7 @@ const MutateSection: FC<MutateSectionProps> = ({ options, setOptions }) => {
 					</Select>
 					<Input
 						size="sm"
-						label={translate("replaceableKey")}
+						label={translate("optionsScreen.replaceableKey")}
 						onChange={(e) => {
 							setOptions({
 								...options,

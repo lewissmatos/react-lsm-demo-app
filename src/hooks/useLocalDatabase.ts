@@ -12,6 +12,8 @@ const useLocalDatabase = () => {
 	const [options, setOptions] = useState<LsmTranslationOptions>({});
 	const [translationKey, setTranslationKey] = useState("");
 
+	const keys = Object.keys(Object?.values(translations)?.[0] ?? {});
+
 	const addLanguage = (langKey: string) => {
 		const currentKeys = Object.keys(Object?.values(translations)?.[0] ?? {});
 		const newTranslations = {
@@ -121,6 +123,42 @@ const useLocalDatabase = () => {
 		storageTranslations(newTranslations);
 	};
 
+	const addTranslationsToALanguage = (
+		langKey: string,
+		newTranslations: object
+	) => {
+		const langNewTranslations = {
+			...(translations[langKey as unknown as never] as object),
+			...newTranslations,
+		};
+
+		let newArrayKeys = Object.keys(langNewTranslations);
+		const newEmptyValuesObject = newArrayKeys.reduce((acc, key) => {
+			return { ...acc, [key]: "" };
+		}, {});
+		let newTranslationsObject = {
+			...translations,
+			[langKey]: langNewTranslations,
+		};
+		const allLanguagesKeys = Object.keys(translations);
+		allLanguagesKeys.forEach((lk) => {
+			if (lk !== langKey) {
+				const langTranslation = translations[lk as unknown as never] as object;
+				const newTranslation = {
+					...langTranslation,
+					...newEmptyValuesObject,
+				};
+				console.log(newTranslation);
+				newTranslationsObject = {
+					...newTranslationsObject,
+					[lk]: newTranslation,
+				};
+			}
+		});
+
+		storageTranslations(newTranslationsObject);
+	};
+
 	const storageTranslations = (newTranslations: object) => {
 		localStorage.setItem("translations", JSON.stringify(newTranslations));
 		setTranslations({ ...newTranslations } as unknown as any);
@@ -158,6 +196,7 @@ const useLocalDatabase = () => {
 		localStorage.setItem("translationKey", newKey);
 		setTranslationKey(newKey);
 	};
+
 	return {
 		translations,
 		addLanguage,
@@ -167,11 +206,13 @@ const useLocalDatabase = () => {
 		removeKey,
 		updateKey,
 		fillAllLanguageTranslations,
+		addTranslationsToALanguage,
 		options,
 		setOptions: saveOptions as Dispatch<SetStateAction<LsmTranslationOptions>>,
 		saveOptions,
 		translationKey,
 		setTranslationKey: updateTranslationKey,
+		translationsKeys: keys,
 	};
 };
 

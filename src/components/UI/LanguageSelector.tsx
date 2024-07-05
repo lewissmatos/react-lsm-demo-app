@@ -12,10 +12,11 @@ const LanguageSelector = () => {
 	return (
 		<Dropdown>
 			<DropdownTrigger>
-				<Button variant="solid">
+				<Button variant="solid" color="primary">
 					{translate("appLanguage", {
 						replace: { values: { currentLanguage: language } },
 					})}
+					<span className="icon-[ion--chevron-down-outline] text-xl" />
 				</Button>
 			</DropdownTrigger>
 			<DropdownMenu variant="solid">

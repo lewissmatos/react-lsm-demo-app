@@ -14,7 +14,7 @@ const TextCaseSection: FC<TextCaseSectionProps> = ({ options, setOptions }) => {
 
 	return (
 		<Select
-			label="textCase"
+			label={translate("optionsScreen.textCase")}
 			className="mt-4"
 			onChange={(e) => {
 				if (e.target.value === "none") {

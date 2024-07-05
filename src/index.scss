@@ -1,32 +1,29 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 main {
 	@apply min-h-screen;
 	@apply px-[2rem];
 	@apply py-[1rem];
-	background: rgb(29, 29, 52);
+	position: relative;
+	background: rgb(26, 15, 39);
 	background: -moz-linear-gradient(
 		301deg,
-		rgba(29, 29, 52, 1) 25%,
-		rgba(16, 16, 27, 1) 40%,
-		rgba(8, 7, 9, 1) 89%,
-		rgba(0, 0, 0, 1) 96%
+		rgba(26, 15, 39, 1) 41%,
+		rgba(16, 10, 34, 1) 64%,
+		rgba(8, 7, 9, 1) 74%,
+		rgba(11, 10, 32, 1) 91%
 	);
 	background: -webkit-linear-gradient(
 		301deg,
-		rgba(29, 29, 52, 1) 25%,
-		rgba(16, 16, 27, 1) 40%,
-		rgba(8, 7, 9, 1) 89%,
-		rgba(0, 0, 0, 1) 96%
+		rgba(26, 15, 39, 1) 41%,
+		rgba(16, 10, 34, 1) 64%,
+		rgba(8, 7, 9, 1) 74%,
+		rgba(11, 10, 32, 1) 91%
 	);
 	background: linear-gradient(
 		301deg,
-		rgba(29, 29, 52, 1) 25%,
-		rgba(16, 16, 27, 1) 40%,
-		rgba(8, 7, 9, 1) 89%,
-		rgba(0, 0, 0, 1) 96%
+		rgba(26, 15, 39, 1) 41%,
+		rgba(16, 10, 34, 1) 64%,
+		rgba(8, 7, 9, 1) 74%,
+		rgba(11, 10, 32, 1) 91%
 	);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#1d1d34",endColorstr="#000000",GradientType=1);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#1a0f27",endColorstr="#0b0a20",GradientType=1);
 }

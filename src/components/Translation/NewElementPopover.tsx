@@ -24,7 +24,11 @@ const NewElementPopover: FC<NewElementPopoverProps> = ({
 	return (
 		<Popover placement="bottom" showArrow={true}>
 			<PopoverTrigger>
-				<Button isDisabled={isDisabled(keyVal)} className="w-max">
+				<Button
+					isDisabled={isDisabled(keyVal)}
+					className="w-max"
+					variant="flat"
+				>
 					{label}
 				</Button>
 			</PopoverTrigger>

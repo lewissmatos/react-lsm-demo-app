@@ -5,7 +5,7 @@ import { LsmTranslationOptions, useLsmTranslation } from "react-lsm";
 type AdornmentsSectionProps = {
 	options: LsmTranslationOptions;
 	setOptions: React.Dispatch<React.SetStateAction<LsmTranslationOptions>>;
-	property: "startAdornment" | "endAdornment";
+	property: "prefixContent" | "suffixContent";
 };
 const AdornmentsSection: FC<AdornmentsSectionProps> = ({
 	options,
@@ -34,7 +34,7 @@ const AdornmentsSection: FC<AdornmentsSectionProps> = ({
 							...newOptions,
 						});
 					}}
-					label={translate(property)}
+					label={translate(`optionsScreen.${property}`)}
 					defaultSelectedKeys={[options?.[property]?.when ? "1" : "0"]}
 					key={options?.[property]?.when ? "1" : "0"}
 				>
@@ -43,7 +43,7 @@ const AdornmentsSection: FC<AdornmentsSectionProps> = ({
 				</Select>
 				<Input
 					size="sm"
-					label={translate("adornment")}
+					label={translate("optionsScreen.content")}
 					value={options?.[property]?.value ?? ""}
 					onChange={(e) => {
 						setOptions({

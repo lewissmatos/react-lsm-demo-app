@@ -1,7 +1,7 @@
 import { useLsmTranslation, initLsm } from "react-lsm";
 import CodeExample from "./CodeExample";
-import { FC, useState } from "react";
-import { Divider, Input } from "@nextui-org/react";
+import { FC } from "react";
+import { Autocomplete, AutocompleteItem, Divider } from "@nextui-org/react";
 import ReplaceSection from "./ReplaceSection";
 import MutateSection from "./MutateSection";
 import AdornmentsSection from "./AdornmentSection";
@@ -14,8 +14,13 @@ type OptionGeneratorProps = {
 
 const OptionGenerator: FC<OptionGeneratorProps> = ({ translations }) => {
 	const { translate } = useLsmTranslation();
-	const { options, setOptions, translationKey, setTranslationKey } =
-		useLocalDatabase();
+	const {
+		options,
+		setOptions,
+		translationKey,
+		setTranslationKey,
+		translationsKeys,
+	} = useLocalDatabase();
 
 	const userGeneratedFallbackLanguage = Object.keys(translations)?.[0];
 
@@ -26,55 +31,74 @@ const OptionGenerator: FC<OptionGeneratorProps> = ({ translations }) => {
 
 	return (
 		<section className="grid col-span-3">
-			<h1 className="text-4xl font-bold">{translate("options")}</h1>
+			<h1 className="text-4xl font-bold">{translate("optionsScreen.title")}</h1>
 			<div className="grid grid-cols-5 gap-4 mt-4">
-				<div className="col-span-2">
-					<Input
+				<div className="col-span-5 lg:col-span-2">
+					{/* <Input
 						onChange={(e) => setTranslationKey(e.target.value)}
-						label={translate("translationKey")}
+						label={translate("optionsScreen.translationKey")}
 						className="mt-2"
 						value={translationKey}
-					/>
+					/> */}
+					<Autocomplete
+						label={translate("optionsScreen.translationKey")}
+						className="mt-2"
+						value={translationKey}
+						onSelectionChange={(val) => {
+							setTranslationKey(val as string);
+						}}
+						defaultSelectedKey={translationKey}
+						key={translationKey}
+					>
+						{translationsKeys.map((key) => (
+							<AutocompleteItem key={key} value={key}>
+								{key}
+							</AutocompleteItem>
+						))}
+					</Autocomplete>
 					<Divider className="my-4" />
 
 					<div className="mt-2">
 						<p className="text font-semibold text-xl">
-							{translate("textFormat")}
+							{translate("optionsScreen.textFormat")}
 						</p>
 						<TextCaseSection options={options} setOptions={setOptions} />
 
 						<Divider className="my-4" />
 						<div>
 							<p className="text font-semibold text-xl">
-								{translate("textMutation")}
+								{translate("optionsScreen.textMutation")}
 							</p>
 							<ReplaceSection options={options} setOptions={setOptions} />
-							<Divider className="my-4" />
 							<MutateSection options={options} setOptions={setOptions} />
 						</div>
 						<Divider className="my-4" />
 						<div>
 							<p className="text font-semibold text-xl">
-								{translate("adornments")}
+								{translate("optionsScreen.adornments")}
 							</p>
 							<AdornmentsSection
 								options={options}
 								setOptions={setOptions}
-								property="startAdornment"
+								property="prefixContent"
 							/>
 							<AdornmentsSection
 								options={options}
 								setOptions={setOptions}
-								property="endAdornment"
+								property="suffixContent"
 							/>
 						</div>
 					</div>
 				</div>
 
-				<div className="col-span-3">
-					<UserGeneratedConfiguredProvider>
-						<CodeExample options={options} translationKey={translationKey} />
-					</UserGeneratedConfiguredProvider>
+				<div className="col-span-5 lg:col-span-3">
+					{/* <UserGeneratedConfiguredProvider> */}
+					<CodeExample
+						options={options}
+						translationKey={translationKey}
+						TranslationsProvider={UserGeneratedConfiguredProvider}
+					/>
+					{/* </UserGeneratedConfiguredProvider> */}
 				</div>
 			</div>
 		</section>

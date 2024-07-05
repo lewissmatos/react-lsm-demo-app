@@ -14,6 +14,7 @@ import { useLsmTranslation } from "react-lsm";
 import useTranslationsService, {
 	GenerativeType,
 } from "../../services/useTranslationsService";
+import UploadJSONButton from "./UploadJSONButton";
 
 type TranslationValueInputProps = {
 	langKey: string;
@@ -29,7 +30,6 @@ const TranslationValueInput: FC<TranslationValueInputProps> = ({
 	propKey,
 }) => {
 	const [inputValue, setInputValue] = useState(defaultValue);
-	const debounceTimeoutRef = useRef<any>(null);
 
 	useEffect(() => {
 		setInputValue(defaultValue);
@@ -37,18 +37,28 @@ const TranslationValueInput: FC<TranslationValueInputProps> = ({
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setInputValue(e.target.value);
-		if (debounceTimeoutRef.current) {
-			clearTimeout(debounceTimeoutRef.current);
-		}
-		debounceTimeoutRef.current = setTimeout(() => {
-			addTranslation(langKey, propKey, e.target.value);
-		}, 750);
 	};
 	return (
 		<Input
 			value={inputValue}
 			onChange={handleChange}
 			placeholder={`${langKey} Value`}
+			endContent={
+				<Button
+					variant="light"
+					color="primary"
+					isIconOnly
+					size="sm"
+					className={
+						inputValue.length > 0 && inputValue !== defaultValue
+							? ""
+							: "opacity-0"
+					}
+					onClick={() => addTranslation(langKey, propKey, inputValue)}
+				>
+					<span className="icon-[solar--document-add-broken] text-xl"></span>
+				</Button>
+			}
 		/>
 	);
 };
@@ -72,14 +82,11 @@ const GenerativeTypeSelect = ({
 	return (
 		<Dropdown>
 			<DropdownTrigger>
-				<Button color="primary" variant="flat">
+				<Button color="primary" variant="light" isIconOnly>
 					{isLoading ? (
 						<Spinner color="primary" size="sm" />
 					) : (
-						<>
-							<span className="icon-[fluent--bot-sparkle-24-regular] text-xl"></span>
-							<span className="icon-[iconamoon--arrow-down-2] text-xl"></span>
-						</>
+						<span className="icon-[fluent--bot-sparkle-24-regular] text-2xl"></span>
 					)}
 				</Button>
 			</DropdownTrigger>
@@ -111,6 +118,10 @@ type TranslationColumnProps = {
 		generativeType: GenerativeType,
 		newTranslations: object
 	) => void;
+	addTranslationsToALanguage: (
+		langKey: string,
+		newTranslations: object
+	) => void;
 };
 
 const TranslationColumn: FC<TranslationColumnProps> = ({
@@ -119,6 +130,7 @@ const TranslationColumn: FC<TranslationColumnProps> = ({
 	addTranslation,
 	removeLanguage,
 	fillAllLanguageTranslations,
+	addTranslationsToALanguage,
 }) => {
 	const { generateEmptyTranslations, isLoading } = useTranslationsService();
 
@@ -144,7 +156,7 @@ const TranslationColumn: FC<TranslationColumnProps> = ({
 				<Button
 					isIconOnly
 					color="danger"
-					variant="light"
+					variant="flat"
 					onClick={() => removeLanguage(langKey)}
 					size="sm"
 				>
@@ -171,10 +183,17 @@ const TranslationColumn: FC<TranslationColumnProps> = ({
 					isLoading={isLoading}
 					handleGenerateEmptyTranslations={handleGenerateEmptyTranslations}
 				/>
-				<DownloadAsJSONButton
-					data={languageValues}
-					fileName={`${langKey}.translations`}
-				/>
+				<div className="flex flex-row gap-2">
+					<UploadJSONButton
+						addTranslationsToALanguage={(newTranslations: object) =>
+							addTranslationsToALanguage(langKey, newTranslations)
+						}
+					/>
+					<DownloadAsJSONButton
+						data={languageValues}
+						fileName={`${langKey}.translations`}
+					/>
+				</div>
 			</div>
 		</div>
 	);

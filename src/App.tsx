@@ -16,7 +16,7 @@ function App() {
 
 	return (
 		<GeneratorConfiguredProvider>
-			<main className="flex flex-col gap-4">
+			<main className="flex flex-col gap-6">
 				<TranslationsGenerator database={database} />
 				<OptionGenerator translations={database.translations} />
 				{/* <Documentation /> */}

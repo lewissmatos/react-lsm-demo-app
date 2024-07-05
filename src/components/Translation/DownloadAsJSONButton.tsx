@@ -20,8 +20,8 @@ const DownloadAsJSONButton: FC<Props> = ({ data, fileName }) => {
 	};
 
 	return (
-		<Button color="primary" onClick={downloadJSON} variant="light">
-			<span className="icon-[tabler--download] text-xl"></span>
+		<Button color="primary" onClick={downloadJSON} variant="flat" isIconOnly>
+			<span className="icon-[solar--upload-square-outline] text-2xl rotate-180"></span>
 		</Button>
 	);
 };

@@ -65,7 +65,7 @@ const ReplaceSection: FC<ReplaceSectionProps> = ({ options, setOptions }) => {
 	const isReplaceActive = !!options?.replace;
 
 	return (
-		<div className="mt-2">
+		<div className="mt-4">
 			<div className="flex flex-row items-center gap-1 justify-between">
 				<Switch
 					onChange={(e) => {
@@ -88,8 +88,9 @@ const ReplaceSection: FC<ReplaceSectionProps> = ({ options, setOptions }) => {
 					}}
 					key={isReplaceActive ? "replace" : "no-replace"}
 					defaultSelected={isReplaceActive}
+					size="sm"
 				>
-					{translate("replace")}
+					{translate("optionsScreen.replace")}
 				</Switch>
 				<Checkbox
 					onChange={(e) => {
@@ -108,8 +109,9 @@ const ReplaceSection: FC<ReplaceSectionProps> = ({ options, setOptions }) => {
 							: "withoutTranslation"
 					}
 					defaultSelected={!!options.replace?.withTranslation}
+					size="sm"
 				>
-					{translate("withTranslation")}
+					{translate("optionsScreen.withTranslation")}
 				</Checkbox>
 			</div>
 			{!!options.replace && (
@@ -118,7 +120,7 @@ const ReplaceSection: FC<ReplaceSectionProps> = ({ options, setOptions }) => {
 						<div key={index} className="flex flex-row items-center mt-1 gap-2">
 							<Input
 								size="sm"
-								label={translate("replaceableKey")}
+								label={translate("optionsScreen.replaceableKey")}
 								value={pair.key}
 								onChange={(e) =>
 									updateKeyValuePair(index, "key", e.target.value)
@@ -126,23 +128,28 @@ const ReplaceSection: FC<ReplaceSectionProps> = ({ options, setOptions }) => {
 							/>
 							<Input
 								size="sm"
-								label={translate("replaceableValue")}
+								label={translate("optionsScreen.replaceableValue")}
 								value={pair.value}
 								onChange={(e) =>
 									updateKeyValuePair(index, "value", e.target.value)
 								}
 							/>
-							<Button color="danger" onClick={() => removeKeyValuePair(index)}>
-								<span className="icon-[mono-icons--delete] text-xl"></span>
+							<Button
+								color="danger"
+								onClick={() => removeKeyValuePair(index)}
+								isIconOnly
+								variant="flat"
+							>
+								<span className="icon-[mono-icons--delete] text-xl" />
 							</Button>
 						</div>
 					))}
 					<div className="flex flex-row gap-1 mt-1 justify-between">
-						<Button variant="flat" onClick={addKeyValuePair}>
-							<span className="icon-[gg--add] text-xl"></span>
+						<Button variant="flat" onClick={addKeyValuePair} isIconOnly>
+							<span className="icon-[gg--add] text-xl" />
 						</Button>
 						<Button color="primary" onClick={submitKeyValuePairs}>
-							{translate("applyReplacements")}
+							{translate("optionsScreen.applyReplacements")}
 						</Button>
 					</div>
 				</div>
