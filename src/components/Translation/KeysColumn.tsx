@@ -1,7 +1,8 @@
-import { Button, Input, Popover, PopoverTrigger } from "@nextui-org/react";
-import React, { FC } from "react";
+import { Button, Input } from "@nextui-org/react";
+import { FC } from "react";
 import NewElementPopover from "./NewElementPopover";
 import DownloadAsJSONButton from "./DownloadAsJSONButton";
+import { useLsmTranslation } from "react-lsm";
 
 type KeysColumnProps = {
 	keys: string[];
@@ -15,6 +16,7 @@ const KeysColumn: FC<KeysColumnProps> = ({
 	removeKey,
 	updateKey,
 }) => {
+	const { translate } = useLsmTranslation();
 	return (
 		<div className="flex flex-col gap-4">
 			<h3 className="text-2xl text-center">Key</h3>
@@ -31,7 +33,7 @@ const KeysColumn: FC<KeysColumnProps> = ({
 							updateKey(key, formattedValue);
 						}}
 						placeholder="Key"
-						autoFocus
+						// autoFocus
 					/>
 				</div>
 			))}
@@ -40,8 +42,8 @@ const KeysColumn: FC<KeysColumnProps> = ({
 				<div className="flex flex-row justify-between w-full">
 					<NewElementPopover
 						isDisabled={(newKey) => keys.includes(newKey as string)}
-						placeholder="Enter a new Key"
-						label="Add Key"
+						placeholder={translate("enterANewKey")}
+						label={translate("addKey")}
 						action={(key) => addKey(key)}
 					/>
 					<DownloadAsJSONButton

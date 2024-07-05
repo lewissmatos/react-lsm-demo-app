@@ -71,27 +71,28 @@ const handlePromptSend = (generativeType: GenerativeType, language: string) => {
 	const onlyEmptyFields = `${promptHead}
 
 		This JSON object will have some keys with empty values.
-		You will generate a new JSON object with the same keys and structure, filling the empty values with the ${language} translation of their respective keys.
+		You will generate a new JSON object with the same keys and structure, filling the empty values with ${language} translation of their respective keys.
 		To do this, translate the key from English to ${language} and use the translation as the value.
 		
 		Instructions:
 		- Do not generate any new keys.
 		- Do not change the structure of the object.
 		- Do not infer meaning or generate additional content from the key.
-		- Use the ${language} translation of the key as the value.
+		- Do not translate the key into a different key.
+		- Use ${language} translation of the key as the value.
 		- Ensure the values have correct capitalization and no typos.
-		- Only use the ${language} for the values.
+		- Only use ${language} for the values.
+		- Capitalize the first letter of the Value.
 		- Translate the key into a natural and appropriate ${language} value (e.g., "brandNew" should be translated as "Totalmente nuevo" in Spanish).
-
 		`;
 
 	const improveTranslations = `${promptHead}
 
-		This JSON object will have some empty values and others filled with the ${language} translation.
+		This JSON object will have some empty values and others filled with ${language} translation.
 		You will generate a new JSON object with the same keys and structure.
 		Your tasks are as follows:
 		
-		1. Fill the empty values with the ${language} translation of their respective keys. Translate the key from English to ${language} and use this translation as the value.
+		1. Fill the empty values with ${language} translation of their respective keys. Translate the key from English to ${language} and use this translation as the value.
 		2. Review the non-empty values:
 		   - If a value does not correspond accurately to the key, replace it with the correct ${language} translation.
 		   - If a value can be improved to sound more natural, update it accordingly.
@@ -99,13 +100,15 @@ const handlePromptSend = (generativeType: GenerativeType, language: string) => {
 		Instructions:
 		- Do not generate any new keys.
 		- Do not change the structure of the object.
-		- Use only the ${language} for the values.
+		- Do not translate the key into a different key.
+		- Use only ${language} for the values.
 		- Ensure the values have correct capitalization and no typos.
 		- Use the exact same keys in the same format.
 		- Do not infer additional meaning or generate extra content from the key.
-		- Only use the ${language} translation as the value.
+		- Only use ${language} translation as the value.
 		- Translate the key into a natural and appropriate ${language} value (e.g., "brandNew" should be translated as "Totalmente nuevo" in Spanish).
 		- Also, if the value is correct but misspelled, correct it. For example Capitalization matters, and stuff.
+		- Capitalize the first letter of the Value.
 		`;
 
 	const prompts = {

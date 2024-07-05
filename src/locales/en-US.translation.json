@@ -1,11 +1,18 @@
 {
 	"examples": "Examples",
+	"translationsGenerator": "Translations Generator",
 	"languages": "Languages",
 	"appLanguage": "App Language: {currentLanguage}",
 	"fillEmptyValuesWithAI": "Fill empty values with AI",
 	"generatingTranslations": "Generating translations...",
 	"GENERATIVE_TYPES": {
-		"ONLY_EMPTY_FIELDS": "Only empty fields",
-		"IMPROVE_AND_FILL_TRANSLATIONS": "Improve and fill translations"
-	}
+		"ONLY_EMPTY_FIELDS": "Generate only empty fields with AI",
+		"IMPROVE_AND_FILL_TRANSLATIONS": "Improve and fill translations with AI"
+	},
+	"enterANewKey": "Enter a new Key",
+	"addKey": "Add Key",
+	"enterNewLanguage": "Enter a new language",
+	"addLanguage": "Add Language",
+	"documentation": "Documentation",
+	"options": "Options"
 }

@@ -1,11 +1,18 @@
 {
 	"examples": "Ejemplos",
+	"translationsGenerator": "Generador de traducciones",
 	"languages": "Idiomas",
 	"appLanguage": "Idioma de la aplicación: {currentLanguage}",
 	"fillEmptyValuesWithAI": "Rellenar valores vacíos con IA",
 	"generatingTranslations": "Generando traducciones...",
 	"GENERATIVE_TYPES": {
-		"ONLY_EMPTY_FIELDS": "Solo campos vacíos",
-		"IMPROVE_AND_FILL_TRANSLATIONS": "Mejorar y rellenar traducciones"
-	}
+		"ONLY_EMPTY_FIELDS": "Generar solo campos vacíos con IA",
+		"IMPROVE_AND_FILL_TRANSLATIONS": "Mejorar y rellenar traducciones con IA"
+	},
+	"enterANewKey": "Ingrese una nueva Key",
+	"addKey": "Agregar Key",
+	"enterNewLanguage": "Ingrese un nuevo idioma",
+	"addLanguage": "Agregar Idioma",
+	"documentation": "Documentación",
+	"options": "Opciones"
 }

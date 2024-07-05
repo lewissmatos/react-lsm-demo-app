@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { GenerativeType } from "../services/useTranslationsService";
+import { LsmTranslationOptions } from "react-lsm";
 
 const defaultValue = {
 	"en-US": { hello: "Hello" },
@@ -7,17 +8,9 @@ const defaultValue = {
 };
 
 const useLocalDatabase = () => {
-	const [translations, setTranslations] = useState({});
-
-	useEffect(() => {
-		if (!localStorage.getItem("translations")) {
-			localStorage.setItem("translations", JSON.stringify(defaultValue));
-		}
-		const _translations = JSON.parse(
-			localStorage.getItem("translations") ?? "{}"
-		);
-		setTranslations(_translations);
-	}, []);
+	const [translations, setTranslations] = useState(defaultValue);
+	const [options, setOptions] = useState<LsmTranslationOptions>({});
+	const [translationKey, setTranslationKey] = useState("");
 
 	const addLanguage = (langKey: string) => {
 		const currentKeys = Object.keys(Object?.values(translations)?.[0] ?? {});
@@ -29,8 +22,7 @@ const useLocalDatabase = () => {
 				}, {}),
 			},
 		};
-		localStorage.setItem("translations", JSON.stringify(newTranslations));
-		setTranslations({ ...newTranslations });
+		storageTranslations(newTranslations);
 	};
 
 	const addKey = (key: string) => {
@@ -42,8 +34,7 @@ const useLocalDatabase = () => {
 			return { ...acc, [langKey]: newTranslation };
 		}, defaultValue);
 
-		localStorage.setItem("translations", JSON.stringify(newTranslations));
-		setTranslations(newTranslations);
+		storageTranslations(newTranslations);
 	};
 
 	const updateKey = (oldKey: string, newKeyVal: string) => {
@@ -59,8 +50,7 @@ const useLocalDatabase = () => {
 			return { ...acc, [langKey]: newTranslation };
 		}, defaultValue);
 
-		localStorage.setItem("translations", JSON.stringify(newTranslations));
-		setTranslations(newTranslations);
+		storageTranslations(newTranslations);
 	};
 
 	const addTranslation = (langKey: string, key: string, value: string) => {
@@ -84,22 +74,19 @@ const useLocalDatabase = () => {
 			return acc;
 		}, defaultValue);
 
-		localStorage.setItem("translations", JSON.stringify(newTranslations));
-		setTranslations(newTranslations);
+		storageTranslations(newTranslations);
 	};
 
 	const removeKey = (key: string) => {
 		const newTranslations = Object.keys(translations).reduce((acc, langKey) => {
 			const newTranslation = {
 				...(translations[langKey as unknown as never] as object),
-				// [key]: "",
 			};
 			delete newTranslation[key as unknown as never];
 			return { ...acc, [langKey]: newTranslation };
 		}, defaultValue);
 
-		localStorage.setItem("translations", JSON.stringify(newTranslations));
-		setTranslations(newTranslations);
+		storageTranslations(newTranslations);
 	};
 
 	const fillAllLanguageTranslations = async (
@@ -107,16 +94,10 @@ const useLocalDatabase = () => {
 		generativeType: GenerativeType,
 		_newTranslation: object
 	) => {
-		for (let i = 0; i < Object.keys(_newTranslation).length; i++) {
-			const currentKey = Object.keys(_newTranslation)[i];
-			if (
-				!Object.keys(translations[langKey as unknown as never]).includes(
-					currentKey
-				)
-			) {
-				delete _newTranslation[currentKey as unknown as never];
-			}
-		}
+		const _t = retainPropertiesBasedOnStructure(
+			_newTranslation,
+			translations[langKey as unknown as never]
+		);
 
 		let newTranslations;
 		if (generativeType === "ONLY_EMPTY_FIELDS") {
@@ -128,19 +109,55 @@ const useLocalDatabase = () => {
 				...translations,
 				[langKey]: {
 					...langTranslation,
-					..._newTranslation,
+					..._t,
 				},
 			};
 		} else {
 			newTranslations = {
 				...translations,
-				[langKey]: _newTranslation,
+				[langKey]: _t,
 			};
 		}
-		localStorage.setItem("translations", JSON.stringify(newTranslations));
-		setTranslations(newTranslations);
+		storageTranslations(newTranslations);
 	};
 
+	const storageTranslations = (newTranslations: object) => {
+		localStorage.setItem("translations", JSON.stringify(newTranslations));
+		setTranslations({ ...newTranslations } as unknown as any);
+	};
+
+	const saveOptions = (newOptions: LsmTranslationOptions) => {
+		localStorage.setItem("options", JSON.stringify(newOptions));
+		setOptions(newOptions);
+	};
+
+	useEffect(() => {
+		if (!localStorage.getItem("translations")) {
+			localStorage.setItem("translations", JSON.stringify(defaultValue));
+		}
+
+		const _translations = JSON.parse(
+			localStorage.getItem("translations") ?? "{}"
+		);
+		setTranslations(_translations);
+
+		if (!localStorage.getItem("options")) {
+			localStorage.setItem("options", JSON.stringify({}));
+		}
+		const _options = JSON.parse(localStorage.getItem("options") ?? "{}");
+		setOptions(_options);
+
+		if (!localStorage.getItem("translationKey")) {
+			localStorage.setItem("translationKey", "");
+		}
+		const _translationKey = localStorage.getItem("translationKey") ?? "";
+		setTranslationKey(_translationKey);
+	}, []);
+
+	const updateTranslationKey = (newKey: string) => {
+		localStorage.setItem("translationKey", newKey);
+		setTranslationKey(newKey);
+	};
 	return {
 		translations,
 		addLanguage,
@@ -150,7 +167,47 @@ const useLocalDatabase = () => {
 		removeKey,
 		updateKey,
 		fillAllLanguageTranslations,
+		options,
+		setOptions: saveOptions as Dispatch<SetStateAction<LsmTranslationOptions>>,
+		saveOptions,
+		translationKey,
+		setTranslationKey: updateTranslationKey,
 	};
 };
+
+type AnyObject = { [key: string]: any };
+
+function retainPropertiesBasedOnStructure(
+	target: AnyObject,
+	reference: AnyObject
+) {
+	if (
+		typeof target !== "object" ||
+		target === null ||
+		typeof reference !== "object" ||
+		reference === null
+	) {
+		return target;
+	}
+
+	const result: AnyObject = {};
+
+	for (const key in reference) {
+		if (reference.hasOwnProperty(key)) {
+			if (target.hasOwnProperty(key)) {
+				if (typeof reference[key] === "object" && reference[key] !== null) {
+					result[key] = retainPropertiesBasedOnStructure(
+						target[key],
+						reference[key]
+					);
+				} else {
+					result[key] = target[key];
+				}
+			}
+		}
+	}
+
+	return result;
+}
 
 export default useLocalDatabase;

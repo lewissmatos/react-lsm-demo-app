@@ -5,15 +5,15 @@ import {
 	DropdownMenu,
 	DropdownTrigger,
 	Input,
+	Spinner,
 	Tooltip,
 } from "@nextui-org/react";
-import { FC, useCallback, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import DownloadAsJSONButton from "./DownloadAsJSONButton";
-import { initLsm, useLsmTranslation } from "react-lsm";
+import { useLsmTranslation } from "react-lsm";
 import useTranslationsService, {
 	GenerativeType,
 } from "../../services/useTranslationsService";
-import useLocalDatabase from "../../hooks/useLocalDatabase";
 
 type TranslationValueInputProps = {
 	langKey: string;
@@ -54,9 +54,13 @@ const TranslationValueInput: FC<TranslationValueInputProps> = ({
 };
 
 const GenerativeTypeSelect = ({
-	setGenerativeType,
+	isLoading,
+	handleGenerateEmptyTranslations,
 }: {
-	setGenerativeType: React.Dispatch<React.SetStateAction<GenerativeType>>;
+	isLoading: boolean;
+	handleGenerateEmptyTranslations: (
+		generativeType: GenerativeType
+	) => Promise<void>;
 }) => {
 	const { translate } = useLsmTranslation();
 
@@ -68,8 +72,15 @@ const GenerativeTypeSelect = ({
 	return (
 		<Dropdown>
 			<DropdownTrigger>
-				<Button variant="light" isIconOnly>
-					<span className="icon-[iconamoon--arrow-down-2] text-xl"></span>
+				<Button color="primary" variant="flat">
+					{isLoading ? (
+						<Spinner color="primary" size="sm" />
+					) : (
+						<>
+							<span className="icon-[fluent--bot-sparkle-24-regular] text-xl"></span>
+							<span className="icon-[iconamoon--arrow-down-2] text-xl"></span>
+						</>
+					)}
 				</Button>
 			</DropdownTrigger>
 			<DropdownMenu variant="solid">
@@ -77,7 +88,9 @@ const GenerativeTypeSelect = ({
 					return (
 						<DropdownItem
 							key={generativeType}
-							onClick={() => setGenerativeType(generativeType)}
+							onClick={async () =>
+								await handleGenerateEmptyTranslations(generativeType)
+							}
 						>
 							{translate(`GENERATIVE_TYPES.${generativeType}`)}
 						</DropdownItem>
@@ -109,12 +122,9 @@ const TranslationColumn: FC<TranslationColumnProps> = ({
 }) => {
 	const { generateEmptyTranslations, isLoading } = useTranslationsService();
 
-	const { translate } = useLsmTranslation();
-	const { translations } = useLocalDatabase();
-	const [generativeType, setGenerativeType] =
-		useState<GenerativeType>("ONLY_EMPTY_FIELDS");
-
-	const handleGenerateEmptyTranslations = async () => {
+	const handleGenerateEmptyTranslations = async (
+		generativeType: GenerativeType
+	) => {
 		const res = await generateEmptyTranslations(
 			langKey,
 			generativeType,
@@ -126,12 +136,6 @@ const TranslationColumn: FC<TranslationColumnProps> = ({
 
 		fillAllLanguageTranslations(langKey, generativeType, res.data);
 	};
-
-	const userGeneratedFallbackLanguage = Object.keys(translations)?.[0];
-	const UserGeneratedConfiguredProvider = initLsm(
-		userGeneratedFallbackLanguage,
-		translations
-	);
 
 	return (
 		<div className="flex flex-col gap-4">
@@ -147,46 +151,26 @@ const TranslationColumn: FC<TranslationColumnProps> = ({
 					<span className="icon-[mono-icons--delete] text-xl"></span>
 				</Button>
 			</div>
-			<UserGeneratedConfiguredProvider>
-				{Object.keys(languageValues).map((key, index) => {
-					const value = languageValues[key as keyof typeof languageValues];
-					return (
-						<Tooltip content={value}>
-							<TranslationValueInput
-								key={key + index + langKey + value}
-								langKey={langKey}
-								defaultValue={value}
-								propKey={key}
-								addTranslation={addTranslation}
-							/>
-						</Tooltip>
-					);
-				})}
-			</UserGeneratedConfiguredProvider>
+			{Object.keys(languageValues).map((key, index) => {
+				const value = languageValues[key as keyof typeof languageValues];
+				return (
+					<Tooltip content={value}>
+						<TranslationValueInput
+							key={key + index + langKey + value}
+							langKey={langKey}
+							defaultValue={value}
+							propKey={key}
+							addTranslation={addTranslation}
+						/>
+					</Tooltip>
+				);
+			})}
 
-			<div className="flex flex-row gap-2">
-				<Button
-					color="primary"
-					onClick={async () => {
-						await handleGenerateEmptyTranslations();
-					}}
-					isDisabled={isLoading}
-					className="pr-0"
-					endContent={
-						<GenerativeTypeSelect setGenerativeType={setGenerativeType} />
-					}
-				>
-					{translate(`GENERATIVE_TYPES.${generativeType}`, {
-						mutate: {
-							when: isLoading,
-							value: "generatingTranslations",
-							withTranslation: true,
-						},
-					})}
-
-					<span className="icon-[fluent--bot-sparkle-24-regular] text-xl"></span>
-				</Button>
-
+			<div className="flex flex-row gap-2 justify-between">
+				<GenerativeTypeSelect
+					isLoading={isLoading}
+					handleGenerateEmptyTranslations={handleGenerateEmptyTranslations}
+				/>
 				<DownloadAsJSONButton
 					data={languageValues}
 					fileName={`${langKey}.translations`}

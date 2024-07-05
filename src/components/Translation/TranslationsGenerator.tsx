@@ -3,15 +3,15 @@ import TranslationColumn from "./TranslationColumn";
 import NewElementPopover from "./NewElementPopover";
 import useLocalDatabase from "../../hooks/useLocalDatabase";
 import { useLsmTranslation } from "react-lsm";
-import {
-	Button,
-	Dropdown,
-	DropdownItem,
-	DropdownMenu,
-	DropdownTrigger,
-} from "@nextui-org/react";
+import LanguageSelector from "../UI/LanguageSelector";
+import { FC } from "react";
 
-const TranslationsGenerator = () => {
+type TranslationsGeneratorProps = {
+	database: any;
+};
+const TranslationsGenerator: FC<TranslationsGeneratorProps> = ({
+	database,
+}) => {
 	const {
 		translations,
 		addTranslation,
@@ -21,35 +21,17 @@ const TranslationsGenerator = () => {
 		addLanguage,
 		removeLanguage,
 		fillAllLanguageTranslations,
-	} = useLocalDatabase();
+	} = database;
 
-	const { translate, language, setLanguage } = useLsmTranslation();
+	const { translate } = useLsmTranslation();
 	const keys = Object.keys(Object?.values(translations)?.[0] ?? {});
 	return (
 		<section className="grid col-span-3">
 			<header className="flex flex-row gap-2 justify-between">
-				<h1 className="text-4xl font-bold">{translate("languages")}</h1>
-				<Dropdown>
-					<DropdownTrigger>
-						<Button variant="solid">
-							{translate("appLanguage", {
-								replace: { values: { currentLanguage: language } },
-							})}
-						</Button>
-					</DropdownTrigger>
-					<DropdownMenu variant="solid">
-						<DropdownItem key="en-US" onClick={() => setLanguage("en-US")}>
-							<span className={language === "en-US" ? "font-bold" : ""}>
-								en-US
-							</span>
-						</DropdownItem>
-						<DropdownItem key="es-MX" onClick={() => setLanguage("es-MX")}>
-							<span className={language === "es-MX" ? "font-bold" : ""}>
-								es-MX
-							</span>
-						</DropdownItem>
-					</DropdownMenu>
-				</Dropdown>
+				<h1 className="text-4xl font-bold">
+					{translate("translationsGenerator")}
+				</h1>
+				<LanguageSelector />
 			</header>
 			<div className="flex flex-row gap-6 mt-6">
 				<KeysColumn
@@ -74,8 +56,8 @@ const TranslationsGenerator = () => {
 				})}
 				<NewElementPopover
 					isDisabled={() => Object.keys(translations).length >= 5}
-					placeholder="Enter a new Language"
-					label="Add Language"
+					placeholder={translate("enterNewLanguage")}
+					label={translate("addLanguage")}
 					action={(key) => addLanguage(key)}
 				/>
 			</div>
