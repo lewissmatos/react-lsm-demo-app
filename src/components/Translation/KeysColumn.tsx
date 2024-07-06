@@ -1,8 +1,8 @@
 import { Button, Input } from "@nextui-org/react";
 import { FC, useEffect, useState } from "react";
-import NewElementPopover from "./NewElementPopover";
 import DownloadAsJSONButton from "./DownloadAsJSONButton";
 import { useLsmTranslation } from "react-lsm";
+import AddKeyPopover from "./AddKeyPopover";
 
 type TranslationKeyInputProps = {
 	defaultValue: string;
@@ -50,6 +50,7 @@ const TranslationKeyInput: FC<TranslationKeyInputProps> = ({
 type KeysColumnProps = {
 	keys: string[];
 	addKey: (key: string) => void;
+	addNestedKey: (key: string, children: string) => void;
 	removeKey: (key: string) => void;
 	updateKey: (key: string, value: string) => void;
 };
@@ -83,12 +84,11 @@ const KeysColumn: FC<KeysColumnProps> = ({
 				</div>
 			))}
 			<div className="flex flex-row justify-between w-full">
-				<NewElementPopover
+				<AddKeyPopover
+					addKey={addKey}
 					isDisabled={(newKey) => keys.includes(newKey as string)}
-					placeholder={translate("enterANewKey")}
-					label={translate("addKey")}
-					action={(key) => addKey(key)}
 				/>
+
 				<DownloadAsJSONButton
 					data={keys.reduce((acc, key) => {
 						acc[key] = key;

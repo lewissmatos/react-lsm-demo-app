@@ -9,7 +9,7 @@
 		"ONLY_EMPTY_FIELDS": "Generar solo campos vacíos con IA",
 		"IMPROVE_AND_FILL_TRANSLATIONS": "Mejorar y rellenar traducciones con IA"
 	},
-	"enterANewKey": "Ingrese una nueva Key",
+	"enterANewKey": "Ingrese una nueva Clave",
 	"addKey": "Agregar Clave",
 	"key": "Clave",
 	"enterNewLanguage": "Ingrese un nuevo idioma",
@@ -33,7 +33,8 @@
 		"replaceableKey": "Clave de reemplazo",
 		"replaceableValue": "Valor de reemplazo",
 		"applyReplacements": "Aplicar reemplazos",
-		"when": "Cuando"
+		"when": "Cuando",
+		"rejectDefaultFallback": "Descartar el formato predeterminado"
 	},
 	"output": "Salida",
 	"true": "Verdadero",

@@ -33,7 +33,8 @@
 		"replaceableKey": "Replaceable Key",
 		"replaceableValue": "Replaceable Value",
 		"applyReplacements": "Apply Replacements",
-		"when": "When"
+		"when": "When",
+		"rejectDefaultFallback": "Reject Default Fallback"
 	},
 	"output": "Output",
 	"true": "True",

@@ -88,10 +88,11 @@ const OutputManager = ({
 }) => {
 	const { setLanguage, language, translate, availableLanguages } =
 		useLsmTranslation();
+
 	return (
 		<>
 			<ButtonGroup>
-				{availableLanguages?.map((lang) => (
+				{availableLanguages?.map((lang: string) => (
 					<Button
 						key={lang}
 						onClick={() => setLanguage(lang)}
@@ -126,7 +127,7 @@ const CodeExample = ({
 	translationKey,
 	TranslationsProvider,
 }: CodeExampleProps) => {
-	const code = getCodeString(options, translationKey);
+	const code = getCodeString(translationKey, options);
 	return (
 		<div className="flex flex-col mt-2">
 			<CodeRenderer
@@ -144,8 +145,8 @@ const CodeExample = ({
 };
 
 const getCodeString = (
-	options: LsmTranslationOptions,
-	translationKey: string
+	translationKey: string,
+	options: LsmTranslationOptions
 	// outputText: string
 ) => {
 	const formattedOptions = JSON.stringify(options, null, 12);

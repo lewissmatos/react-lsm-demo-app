@@ -1,7 +1,13 @@
 import { useLsmTranslation, initLsm } from "react-lsm";
 import CodeExample from "./CodeExample";
-import { FC } from "react";
-import { Autocomplete, AutocompleteItem, Divider } from "@nextui-org/react";
+import { FC, useState } from "react";
+import {
+	Autocomplete,
+	AutocompleteItem,
+	Divider,
+	Input,
+	Switch,
+} from "@nextui-org/react";
 import ReplaceSection from "./ReplaceSection";
 import MutateSection from "./MutateSection";
 import AdornmentsSection from "./AdornmentSection";
@@ -14,16 +20,9 @@ type OptionGeneratorProps = {
 
 const OptionGenerator: FC<OptionGeneratorProps> = ({ translations }) => {
 	const { translate } = useLsmTranslation();
-	const {
-		options,
-		setOptions,
-		translationKey,
-		setTranslationKey,
-		translationsKeys,
-	} = useLocalDatabase();
-
+	const { options, setOptions, translationKey, setTranslationKey } =
+		useLocalDatabase();
 	const userGeneratedFallbackLanguage = Object.keys(translations)?.[0];
-
 	const UserGeneratedConfiguredProvider = initLsm(
 		userGeneratedFallbackLanguage,
 		translations
@@ -34,30 +33,29 @@ const OptionGenerator: FC<OptionGeneratorProps> = ({ translations }) => {
 			<h1 className="text-3xl font-bold">{translate("optionsScreen.title")}</h1>
 			<div className="grid grid-cols-5 gap-4 mt-4">
 				<div className="col-span-5 lg:col-span-2">
-					{/* <Input
-						onChange={(e) => setTranslationKey(e.target.value)}
-						label={translate("optionsScreen.translationKey")}
-						className="mt-2"
-						value={translationKey}
-					/> */}
-					<Autocomplete
-						label={translate("optionsScreen.translationKey")}
-						className="mt-2"
-						value={translationKey}
-						onSelectionChange={(val) => {
-							setTranslationKey(val as string);
-						}}
-						defaultSelectedKey={translationKey}
-						key={translationKey}
-					>
-						{translationsKeys.map((key) => (
-							<AutocompleteItem key={key} value={key}>
-								{key}
-							</AutocompleteItem>
-						))}
-					</Autocomplete>
-					<Divider className="my-4" />
+					<div className="flex flex-col items-start gap-2 justify-between">
+						<Input
+							onChange={(e) => setTranslationKey(e.target.value)}
+							label={translate("optionsScreen.translationKey")}
+							className="mt-2"
+							value={translationKey}
+						/>
+						<Switch
+							size="sm"
+							defaultSelected={options?.rejectDefaultFallback}
+							key={options?.rejectDefaultFallback ? "reject" : "no-reject"}
+							onChange={(e) => {
+								setOptions({
+									...options,
+									rejectDefaultFallback: e.target.checked,
+								});
+							}}
+						>
+							{translate("optionsScreen.rejectDefaultFallback")}
+						</Switch>
+					</div>
 
+					<Divider className="my-4" />
 					<div className="mt-2">
 						<p className="text font-semibold text-xl">
 							{translate("optionsScreen.textFormat")}

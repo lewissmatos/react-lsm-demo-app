@@ -5,7 +5,11 @@ import {
 	DropdownMenu,
 	DropdownTrigger,
 	Input,
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
 	Spinner,
+	Textarea,
 	Tooltip,
 } from "@nextui-org/react";
 import { FC, useEffect, useState } from "react";
@@ -29,6 +33,12 @@ const TranslationValueInput: FC<TranslationValueInputProps> = ({
 	addTranslation,
 	propKey,
 }) => {
+	const isObject = typeof defaultValue === "object";
+
+	defaultValue = !isObject
+		? defaultValue
+		: JSON.stringify(defaultValue, null, 4);
+
 	const [inputValue, setInputValue] = useState(defaultValue);
 
 	useEffect(() => {
@@ -38,13 +48,43 @@ const TranslationValueInput: FC<TranslationValueInputProps> = ({
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setInputValue(e.target.value);
 	};
-	return (
-		<Tooltip content={inputValue}>
-			<Input
-				value={inputValue}
-				onChange={handleChange}
-				placeholder={`${langKey} Value`}
-				endContent={
+
+	const inputProps = {
+		value: inputValue,
+		onChange: handleChange,
+		placeholder: `${langKey} Value`,
+		endContent: (
+			<>
+				{isObject ? (
+					<Popover className="w-[600px]">
+						<PopoverTrigger>
+							<Button variant="light" color="primary" isIconOnly size="sm">
+								<span className="icon-[solar--document-add-broken] text-xl"></span>
+							</Button>
+						</PopoverTrigger>
+						<PopoverContent className="flex flex-col gap-1 items-end">
+							<Textarea
+								onChange={handleChange}
+								value={inputValue}
+								placeholder={`${langKey} Value`}
+							/>
+							<Button
+								variant="light"
+								isIconOnly
+								size="sm"
+								onClick={() => {
+									addTranslation(
+										langKey,
+										propKey,
+										!isObject ? inputValue : JSON.parse(inputValue)
+									);
+								}}
+							>
+								<span className="icon-[material-symbols--bookmark-added-outline-rounded] text-xl"></span>
+							</Button>
+						</PopoverContent>
+					</Popover>
+				) : (
 					<Button
 						variant="light"
 						color="primary"
@@ -53,14 +93,19 @@ const TranslationValueInput: FC<TranslationValueInputProps> = ({
 						className={
 							inputValue.length > 0 && inputValue !== defaultValue
 								? ""
-								: "opacity-0"
+								: "opacity-0 pointer-events-none"
 						}
 						onClick={() => addTranslation(langKey, propKey, inputValue)}
 					>
-						<span className="icon-[solar--document-add-broken] text-xl"></span>
+						<span className="icon-[material-symbols--bookmark-added-outline-rounded] text-xl"></span>
 					</Button>
-				}
-			/>
+				)}
+			</>
+		),
+	};
+	return (
+		<Tooltip content={inputValue}>
+			<Input {...inputProps} />
 		</Tooltip>
 	);
 };
@@ -124,6 +169,7 @@ type TranslationColumnProps = {
 		langKey: string,
 		newTranslations: object
 	) => void;
+	index: number;
 };
 
 const TranslationColumn: FC<TranslationColumnProps> = ({
@@ -133,6 +179,7 @@ const TranslationColumn: FC<TranslationColumnProps> = ({
 	removeLanguage,
 	fillAllLanguageTranslations,
 	addTranslationsToALanguage,
+	index,
 }) => {
 	const { generateEmptyTranslations, isLoading } = useTranslationsService();
 
@@ -154,23 +201,27 @@ const TranslationColumn: FC<TranslationColumnProps> = ({
 	return (
 		<div className="flex flex-col gap-4">
 			<div className="flex flex-row gap-2 justify-between">
-				<h3 className="text-2xl">{langKey}</h3>
-				<Button
-					isIconOnly
-					color="danger"
-					variant="flat"
-					onClick={() => removeLanguage(langKey)}
-					size="sm"
-				>
-					<span className="icon-[mono-icons--delete] text-xl"></span>
-				</Button>
+				<h3 className="text-2xl">
+					{langKey}{" "}
+					{index === 0 ? <span className="text-xs">(fbkLang)</span> : null}
+				</h3>
+				{index !== 0 ? (
+					<Button
+						isIconOnly
+						color="danger"
+						variant="flat"
+						onClick={() => removeLanguage(langKey)}
+						size="sm"
+					>
+						<span className="icon-[mono-icons--delete] text-xl"></span>
+					</Button>
+				) : null}
 			</div>
 			{Object.keys(languageValues).map((key, index) => {
 				const value = languageValues[key as keyof typeof languageValues];
 				return (
-					<Tooltip content={value}>
+					<Tooltip content={value} key={key + index + langKey + value}>
 						<TranslationValueInput
-							key={key + index + langKey + value}
 							langKey={langKey}
 							defaultValue={value}
 							propKey={key}

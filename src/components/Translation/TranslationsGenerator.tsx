@@ -1,9 +1,8 @@
 import KeysColumn from "./KeysColumn";
 import TranslationColumn from "./TranslationColumn";
-import NewElementPopover from "./NewElementPopover";
 import { useLsmTranslation } from "react-lsm";
-import LanguageSelector from "../UI/LanguageSelector";
 import { FC } from "react";
+import AddLanguagePopover from "./AddLanguagePopover";
 
 type TranslationsGeneratorProps = {
 	database: any;
@@ -15,6 +14,7 @@ const TranslationsGenerator: FC<TranslationsGeneratorProps> = ({
 		translations,
 		addTranslation,
 		addKey,
+		addNestedKey,
 		updateKey,
 		removeKey,
 		addLanguage,
@@ -35,15 +35,17 @@ const TranslationsGenerator: FC<TranslationsGeneratorProps> = ({
 				<KeysColumn
 					keys={keys}
 					addKey={addKey}
+					addNestedKey={addNestedKey}
 					removeKey={removeKey}
 					updateKey={updateKey}
 				/>
-				{Object.keys(translations).map((langKey) => {
+				{Object.keys(translations).map((langKey, index) => {
 					const languageValues =
 						translations[langKey as keyof typeof translations];
 					return (
 						<TranslationColumn
 							key={langKey}
+							index={index}
 							langKey={langKey}
 							languageValues={languageValues}
 							addTranslation={addTranslation}
@@ -53,11 +55,9 @@ const TranslationsGenerator: FC<TranslationsGeneratorProps> = ({
 						/>
 					);
 				})}
-				<NewElementPopover
-					isDisabled={() => Object.keys(translations).length >= 5}
-					placeholder={translate("enterNewLanguage")}
-					label={translate("addLanguage")}
-					action={(key) => addLanguage(key)}
+				<AddLanguagePopover
+					addLanguage={addLanguage}
+					isDisabled={Object.keys(translations).length >= 5}
 				/>
 			</div>
 		</section>

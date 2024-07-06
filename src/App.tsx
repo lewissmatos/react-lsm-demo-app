@@ -7,13 +7,13 @@ import OptionGenerator from "./components/Options/OptionsGenerator";
 import useLocalDatabase from "./hooks/useLocalDatabase";
 import AppHeader from "./components/UI/AppHeader";
 
+const userGeneratedFallbackLanguage = "en-US";
+const GeneratorConfiguredProvider = initLsm(userGeneratedFallbackLanguage, {
+	"en-US": en_US,
+	"es-MX": es_MX,
+});
 function App() {
 	const database = useLocalDatabase();
-	const userGeneratedFallbackLanguage = "en-US";
-	const GeneratorConfiguredProvider = initLsm(userGeneratedFallbackLanguage, {
-		"en-US": en_US,
-		"es-MX": es_MX,
-	});
 
 	return (
 		<GeneratorConfiguredProvider>

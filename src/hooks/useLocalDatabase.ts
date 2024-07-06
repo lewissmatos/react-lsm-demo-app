@@ -4,7 +4,6 @@ import { LsmTranslationOptions } from "react-lsm";
 
 const defaultValue = {
 	"en-US": { hello: "Hello" },
-	"es-MX": { hello: "Hola" },
 };
 
 const useLocalDatabase = () => {
@@ -55,7 +54,11 @@ const useLocalDatabase = () => {
 		storageTranslations(newTranslations);
 	};
 
-	const addTranslation = (langKey: string, key: string, value: string) => {
+	const addTranslation = (
+		langKey: string,
+		key: string,
+		value: string | object
+	) => {
 		const newTranslations = {
 			...translations,
 			[langKey]: {
@@ -145,10 +148,9 @@ const useLocalDatabase = () => {
 			if (lk !== langKey) {
 				const langTranslation = translations[lk as unknown as never] as object;
 				const newTranslation = {
-					...langTranslation,
 					...newEmptyValuesObject,
+					...langTranslation,
 				};
-				console.log(newTranslation);
 				newTranslationsObject = {
 					...newTranslationsObject,
 					[lk]: newTranslation,
@@ -193,8 +195,8 @@ const useLocalDatabase = () => {
 	}, []);
 
 	const updateTranslationKey = (newKey: string) => {
-		localStorage.setItem("translationKey", newKey);
-		setTranslationKey(newKey);
+		localStorage.setItem("translationKey", newKey ?? "");
+		setTranslationKey(newKey ?? "");
 	};
 
 	return {
@@ -210,9 +212,10 @@ const useLocalDatabase = () => {
 		options,
 		setOptions: saveOptions as Dispatch<SetStateAction<LsmTranslationOptions>>,
 		saveOptions,
-		translationKey,
+		translationKey: translationKey ?? "",
 		setTranslationKey: updateTranslationKey,
 		translationsKeys: keys,
+		fallbackLanguage: Object.keys(translations)[0] ?? "",
 	};
 };
 

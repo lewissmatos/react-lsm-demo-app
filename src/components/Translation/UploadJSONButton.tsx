@@ -25,6 +25,7 @@ const UploadJSONButton: FC<UploadJSONButtonProps> = ({
 		<>
 			<input
 				type="file"
+				accept=".json"
 				onChange={handleChange}
 				className="hidden"
 				ref={inputRef}
