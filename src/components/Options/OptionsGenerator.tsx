@@ -1,13 +1,7 @@
 import { useLsmTranslation, initLsm } from "react-lsm";
 import CodeExample from "./CodeExample";
-import { FC, useState } from "react";
-import {
-	Autocomplete,
-	AutocompleteItem,
-	Divider,
-	Input,
-	Switch,
-} from "@nextui-org/react";
+import { FC } from "react";
+import { Divider, Input, Switch } from "@nextui-org/react";
 import ReplaceSection from "./ReplaceSection";
 import MutateSection from "./MutateSection";
 import AdornmentsSection from "./AdornmentSection";
@@ -30,7 +24,7 @@ const OptionGenerator: FC<OptionGeneratorProps> = ({ translations }) => {
 
 	return (
 		<section className="grid col-span-3">
-			<h1 className="text-3xl font-bold">{translate("optionsScreen.title")}</h1>
+			<h2 className="text-3xl font-bold">{translate("optionsScreen.title")}</h2>
 			<div className="grid grid-cols-5 gap-4 mt-4">
 				<div className="col-span-5 lg:col-span-2">
 					<div className="flex flex-col items-start gap-2 justify-between">

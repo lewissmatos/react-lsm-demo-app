@@ -41,7 +41,7 @@ const TranslationKeyInput: FC<TranslationKeyInputProps> = ({
 					}
 					onClick={() => updateKey(propKey, inputValue)}
 				>
-					<span className="icon-[solar--document-add-broken] text-xl"></span>
+					<span className="icon-[material-symbols--bookmark-added-outline-rounded] text-xl"></span>
 				</Button>
 			}
 		/>

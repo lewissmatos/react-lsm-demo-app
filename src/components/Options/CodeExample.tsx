@@ -1,7 +1,6 @@
 import { Button, ButtonGroup, Code, Tooltip } from "@nextui-org/react";
 import { FC, memo, useState } from "react";
 import { LsmTranslationOptions, useLsmTranslation } from "react-lsm";
-
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
@@ -63,7 +62,7 @@ const CodeRenderer: FC<CodeRendererProps> = memo(
 					</div>
 				</div>
 				<SyntaxHighlighter
-					language="javascript"
+					language="tsx"
 					style={oneDark}
 					showLineNumbers
 					customStyle={{

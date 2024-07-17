@@ -43,5 +43,6 @@
 	"npmRepository": "npm Repository",
 	"githubRepository": "Github Repository",
 	"microsoftLanguagesReference": "Microsoft Languages Reference",
-	"donateOnKofi": "Donate on Ko fi"
+	"donateOnKofi": "Donate on Ko fi",
+	"add": "Add"
 }

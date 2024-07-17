@@ -1,26 +1,19 @@
-import axios from "axios";
-import { memo, useLayoutEffect, useState } from "react";
+import { memo,  } from "react";
 import { useLsmTranslation } from "react-lsm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-
-const customStyle = {
-	lineHeight: "1.5",
-	fontSize: "1rem",
-	borderRadius: "5px",
-	padding: "20px",
-};
-
-const CustomPre = (props: any) => <pre id="customPreTag" {...props} />;
-
+import documentationExamples from "./documentation-examples";
 const CodeRenderer = memo(({ codeString }: any) => {
 	return (
 		<SyntaxHighlighter
-			PreTag={CustomPre}
-			language="markdown"
+			language="jsx"
 			style={oneDark}
 			showLineNumbers
-			customStyle={customStyle}
+			customStyle={{
+				borderRadius: "0.5rem",
+				marginBottom: "0.25rem",
+				fontSize: "1rem",
+			}}
 		>
 			{codeString}
 		</SyntaxHighlighter>
@@ -28,29 +21,28 @@ const CodeRenderer = memo(({ codeString }: any) => {
 });
 
 const Documentation = () => {
-	const [readme, setReadme] = useState("");
 	const { translate } = useLsmTranslation();
-
-	const getReadme = async () => {
-		try {
-			const response = await axios.get(
-				"https://api.github.com/repos/lewissmatos/react-lsm/contents/README.md"
-			);
-			const content = atob(response.data.content);
-			setReadme(content);
-		} catch (error) {
-			throw error;
-		}
-	};
-
-	useLayoutEffect(() => {
-		getReadme();
-	}, []);
-
+	
 	return (
-		<section className="grid col-span-1">
-			<h1 className="text-4xl font-bold mb-4">{translate("documentation")}</h1>
-			{<CodeRenderer codeString={readme} language="markdown" />}
+		<section className="grid col-span-3">
+
+			<h2 className="text-3xl font-bold">{translate("documentation")}</h2>
+			<div className="grid grid-cols-1 gap-4">
+				{documentationExamples.map((example: any) => (
+					<div key={example.title}>
+						<div className="flex flex-row items-end gap-2">
+							<h3 className="text-3xl font-semibold text-primary">
+								{example.title}
+							</h3>
+							<h4 className="text-xl text-primary-500 block">
+								({example.subtitle})
+							</h4>
+						</div>
+						<p className="text-xl text-gray-600">{example.description}</p>
+						<CodeRenderer codeString={example.code} />
+					</div>
+				))}
+			</div>
 		</section>
 	);
 };

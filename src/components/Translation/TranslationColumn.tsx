@@ -19,6 +19,7 @@ import useTranslationsService, {
 	GenerativeType,
 } from "../../services/useTranslationsService";
 import UploadJSONButton from "./UploadJSONButton";
+import { join } from "path";
 
 type TranslationValueInputProps = {
 	langKey: string;
@@ -33,13 +34,13 @@ const TranslationValueInput: FC<TranslationValueInputProps> = ({
 	addTranslation,
 	propKey,
 }) => {
+	const [inputValue, setInputValue] = useState(defaultValue);
+
 	const isObject = typeof defaultValue === "object";
 
 	defaultValue = !isObject
 		? defaultValue
 		: JSON.stringify(defaultValue, null, 4);
-
-	const [inputValue, setInputValue] = useState(defaultValue);
 
 	useEffect(() => {
 		setInputValue(defaultValue);
@@ -54,53 +55,34 @@ const TranslationValueInput: FC<TranslationValueInputProps> = ({
 		onChange: handleChange,
 		placeholder: `${langKey} Value`,
 		endContent: (
-			<>
-				{isObject ? (
-					<Popover className="w-[600px]">
-						<PopoverTrigger>
-							<Button variant="light" color="primary" isIconOnly size="sm">
-								<span className="icon-[solar--document-add-broken] text-xl"></span>
-							</Button>
-						</PopoverTrigger>
-						<PopoverContent className="flex flex-col gap-1 items-end">
-							<Textarea
-								onChange={handleChange}
-								value={inputValue}
-								placeholder={`${langKey} Value`}
-							/>
-							<Button
-								variant="light"
-								isIconOnly
-								size="sm"
-								onClick={() => {
-									addTranslation(
-										langKey,
-										propKey,
-										!isObject ? inputValue : JSON.parse(inputValue)
-									);
-								}}
-							>
-								<span className="icon-[material-symbols--bookmark-added-outline-rounded] text-xl"></span>
-							</Button>
-						</PopoverContent>
-					</Popover>
-				) : (
+			<Popover className="w-[600px]">
+				<PopoverTrigger>
+					<Button variant="light" color="primary" isIconOnly size="sm">
+						<span className="icon-[solar--document-add-broken] text-xl"></span>
+					</Button>
+				</PopoverTrigger>
+				<PopoverContent className="flex flex-col gap-1 items-end">
+					<Textarea
+						onChange={handleChange}
+						value={inputValue}
+						placeholder={`${langKey} Value`}
+					/>
 					<Button
 						variant="light"
-						color="primary"
 						isIconOnly
 						size="sm"
-						className={
-							inputValue.length > 0 && inputValue !== defaultValue
-								? ""
-								: "opacity-0 pointer-events-none"
-						}
-						onClick={() => addTranslation(langKey, propKey, inputValue)}
+						onClick={() => {
+							addTranslation(
+								langKey,
+								propKey,
+								!isObject ? inputValue : JSON.parse(inputValue)
+							);
+						}}
 					>
 						<span className="icon-[material-symbols--bookmark-added-outline-rounded] text-xl"></span>
 					</Button>
-				)}
-			</>
+				</PopoverContent>
+			</Popover>
 		),
 	};
 	return (

@@ -27,9 +27,9 @@ const TranslationsGenerator: FC<TranslationsGeneratorProps> = ({
 	const { translate } = useLsmTranslation();
 	return (
 		<section className="grid col-span-3">
-			<h1 className="text-3xl font-bold">
+			<h2 className="text-3xl font-bold">
 				{translate("translationsGenerator")}
-			</h1>
+			</h2>
 
 			<div className="flex flex-row gap-6 mt-6">
 				<KeysColumn

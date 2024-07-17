@@ -6,6 +6,7 @@ import es_MX from "./locales/es-MX.translation.json";
 import OptionGenerator from "./components/Options/OptionsGenerator";
 import useLocalDatabase from "./hooks/useLocalDatabase";
 import AppHeader from "./components/UI/AppHeader";
+import Documentation from "./components/Documentation/Documentation";
 
 const userGeneratedFallbackLanguage = "en-US";
 const GeneratorConfiguredProvider = initLsm(userGeneratedFallbackLanguage, {
@@ -21,7 +22,7 @@ function App() {
 				<AppHeader />
 				<TranslationsGenerator database={database} />
 				<OptionGenerator translations={database.translations} />
-				{/* <Documentation /> */}
+				<Documentation />
 			</main>
 		</GeneratorConfiguredProvider>
 	);
